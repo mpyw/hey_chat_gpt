@@ -1,0 +1,17 @@
+[package]
+name = "hey_chat_gpt"
+version = "0.1.0"
+edition = "2021"
+build = "build.rs"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+anyhow = "1.0.95"
+proc-macro2 = "1.0.92"
+quote = "1.0.38"
+reqwest = { version = "0.12.11", features = ["json", "blocking"] }
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = "1.0.134"
+syn = { version = "2.0.93", features = ["extra-traits", "full"] }
