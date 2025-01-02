@@ -17,7 +17,6 @@ use syn::{parse::Parse, parse::ParseStream};
 #[derive(Debug, serde::Serialize, serde::Deserialize, Clone, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 enum Role {
-    System,
     User,
     Assistant,
 }
@@ -70,6 +69,7 @@ fn common_header(api_key: &str) -> RequestBuilder {
 
 fn query(
     api_key: &str,
+    model: String,
     input_messages: &[Message],
     seed: u64,
     max_completion_tokens: Option<u64>,
@@ -77,7 +77,7 @@ fn query(
 ) -> anyhow::Result<Message> {
     let response_body = common_header(api_key)
         .json(&RequestBody {
-            model: "gpt-4o".to_string(),
+            model,
             messages: Vec::from(input_messages),
             seed: seed % 9223372036854775807,
             max_completion_tokens,
@@ -102,6 +102,7 @@ fn query(
 pub fn take_care_of_the_rest(
     MacroInput {
         vis,
+        model,
         prompt: _,
         seed,
         max_completion_tokens,
@@ -123,9 +124,12 @@ pub fn take_care_of_the_rest(
     }
 
     let api_key = std::env::var("OPENAI_API_KEY").into_syn(span)?;
+    if api_key == "DEBUG" {
+        return Ok(TokenStream::new());
+    }
 
     let system_message = Message {
-        role: Role::System,
+        role: Role::User, // 本当はSystemとしたいがo1-previewで撤廃されたらしい
         content: system_message.to_string(),
     };
     let user_message = Message {
@@ -134,6 +138,7 @@ pub fn take_care_of_the_rest(
     };
     let messages = vec![system_message, user_message];
 
+    let model = model.unwrap_or("gpt-4o".to_string());
     let seed = match seed {
         Some(seed) => seed,
         None => hash_content(&content),
@@ -142,6 +147,7 @@ pub fn take_care_of_the_rest(
         content: res_code, ..
     } = query(
         &api_key,
+        model,
         &messages,
         seed,
         max_completion_tokens,
@@ -159,8 +165,14 @@ pub fn take_care_of_the_rest(
 }
 
 fn get_cache_file_path(content: &str) -> PathBuf {
-    // CargoのOUT_DIRを取得
-    let out_dir = env::var("OUT_DIR").expect("OUT_DIR is not set");
+    // target/を取得
+    let out_dir = env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR is not set");
+    let cache_dir = format!("{}/gpt_responses", out_dir);
+
+    if !fs::exists(&cache_dir).expect("Failed to check if cache directory exists") {
+        fs::create_dir_all(&cache_dir).expect("Failed to create cache directory");
+    }
+
     let cache_file =
         PathBuf::from(out_dir).join(format!("gpt_responses/cache_{}.txt", hash_content(content)));
     cache_file
@@ -194,6 +206,7 @@ fn hash_content(content: &str) -> u64 {
 
 pub struct MacroInput {
     vis: Visibility,
+    model: Option<String>,
     #[allow(unused)]
     prompt: Option<LitStr>,
     seed: Option<u64>,
@@ -202,6 +215,7 @@ pub struct MacroInput {
 
 impl Parse for MacroInput {
     fn parse(input: ParseStream) -> syn::Result<Self> {
+        let mut model: Option<String> = None;
         let mut seed = None;
         let mut max_completion_tokens = None;
         let mut prompt = None;
@@ -222,12 +236,17 @@ impl Parse for MacroInput {
             if lookahead.peek(Ident) {
                 let ident = input.parse::<Ident>()?;
                 input.parse::<syn::Token![=]>()?;
-                let value = input.parse::<LitInt>()?;
                 match ident {
+                    i if i == "model" => {
+                        let value = input.parse::<LitStr>()?;
+                        model = Some(value.value());
+                    }
                     i if i == "max_completion_tokens" => {
+                        let value = input.parse::<LitInt>()?;
                         max_completion_tokens = Some(value.base10_parse()?);
                     }
                     i if i == "seed" => {
+                        let value = input.parse::<LitInt>()?;
                         seed = Some(value.base10_parse()?);
                     }
                     _ => return Err(lookahead.error()),
@@ -242,6 +261,7 @@ impl Parse for MacroInput {
 
         Ok(Self {
             vis,
+            model,
             prompt,
             seed,
             max_completion_tokens,

@@ -1,1 +1,3 @@
 /target
+*.memo.txt
+gpt_responses/*

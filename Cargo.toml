@@ -1,8 +1,7 @@
 [package]
 name = "hey_chat_gpt"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
-build = "build.rs"
 
 [lib]
 proc-macro = true
