@@ -9,6 +9,7 @@ repository = "https://github.com/anotherhollow1125/hey_chat_gpt"
 license = "MIT"
 keywords = ["LLM", "GPT", "ChatGPT", "OpenAI", "proc-macro"]
 categories = ["development-tools"]
+exclude = ["src/main.rs"]
 
 [lib]
 proc-macro = true
