@@ -1,3 +1,89 @@
+//! # A proc-macro to delegate implementation to the ChatGPT API.
+//!
+//! ChatGPT APIに実装を代行してもらうマクロです。
+//!
+//! The difference between the two macros is whether they are in English or Japanese.
+//!
+//! この2つのマクロの違いは、英語か日本語かです。
+//!
+//! Please see the links for each macro for more details.
+//!
+//! 詳細は各マクロのリンク先で読んでください。
+//!
+//! # Preparation
+//!
+//! To compile, run the below command.
+//!
+//! ```bash
+//! OPENAI_API_KEY=sk-YOUR-API-KEY RUSTFLAGS='--cfg procmacro2_semver_exempt' cargo +nightly run
+//! ```
+//!
+//! - `OPENAI_API_KEY`: api key.
+//! - `RUSTFLAGS=...`: to enable [`source_file` method](https://doc.rust-lang.org/proc_macro/struct.Span.html#method.source_file) of [Span](https://doc.rust-lang.org/proc_macro/struct.Span.html).
+//! - `cargo +nightly run`: the reason of specify `nightly` is same as above.
+//!
+//! These settings can also be enable by setting files.
+//!
+//! `.cargo/config.toml`
+//!
+//! ```toml:.cargo/config.toml
+//! [build]
+//! rustflags = ["--cfg=procmacro2_semver_exempt"]
+//!
+//! [env]
+//! OPENAI_API_KEY = "sk-YOUR-API-KEY"
+//! ```
+//!
+//! `rust-toolchain.toml`
+//!
+//! ```toml:rust-toolchain.toml
+//! [toolchain]
+//! channel = "nightly"
+//! ```
+//!
+//! In this case, the options are not necessary.
+//!
+//! ```bash
+//! cargo run
+//! ```
+//!
+//! # 使用のための準備
+//!
+//! コンパイルするには以下を実行します。
+//!
+//! ```bash
+//! OPENAI_API_KEY=sk-YOUR-API-KEY RUSTFLAGS='--cfg procmacro2_semver_exempt' cargo +nightly run
+//! ```
+//!
+//! - `OPENAI_API_KEY`: 取得してきたOpenAIのAPIキーを設定してください。
+//! - `RUSTFLAGS=...`: [Span](https://doc.rust-lang.org/proc_macro/struct.Span.html) の [`source_file`](https://doc.rust-lang.org/proc_macro/struct.Span.html#method.source_file) メソッドを使用するために指定しています。
+//! - `cargo +nightly run`: `nightly` の指定理由は上記と同じです。
+//!
+//! 設定ファイルを通しての設定も可能です。
+//!
+//! `.cargo/config.toml`
+//!
+//! ```toml:.cargo/config.toml
+//! [build]
+//! rustflags = ["--cfg=procmacro2_semver_exempt"]
+//!
+//! [env]
+//! OPENAI_API_KEY = "sk-YOUR-API-KEY"
+//! ```
+//!
+//! `rust-toolchain.toml`
+//!
+//! ```toml:rust-toolchain.toml
+//! [toolchain]
+//! channel = "nightly"
+//! ```
+//!
+//! この場合オプションは不要になります。
+//!
+//! ```bash
+//! cargo run
+//! ```
+
 mod impls;
 
 use proc_macro::TokenStream;
@@ -66,7 +152,7 @@ const JAPANESE_MESSAGE: &'static str = r#"私はこのシステムの管理者�
 /// # }
 /// ```
 ///
-/// # How to use
+/// # Preparation
 ///
 /// To compile, run the below command.
 ///
@@ -80,6 +166,8 @@ const JAPANESE_MESSAGE: &'static str = r#"私はこのシステムの管理者�
 ///
 /// These settings can also be enable by setting files.
 ///
+/// `.cargo/config.toml`
+///
 /// ```toml:.cargo/config.toml
 /// [build]
 /// rustflags = ["--cfg=procmacro2_semver_exempt"]
@@ -88,10 +176,14 @@ const JAPANESE_MESSAGE: &'static str = r#"私はこのシステムの管理者�
 /// OPENAI_API_KEY = "sk-YOUR-API-KEY"
 /// ```
 ///
+/// `rust-toolchain.toml`
+///
 /// ```toml:rust-toolchain.toml
 /// [toolchain]
 /// channel = "nightly"
 /// ```
+///
+/// In this case, the options are not necessary.
 ///
 /// ```bash
 /// cargo run
@@ -158,7 +250,7 @@ pub fn take_care_of_the_rest(input: TokenStream) -> TokenStream {
 /// # }
 /// ```
 ///
-/// # 使い方
+/// # 使用のための準備
 ///
 /// コンパイルするには以下を実行します。
 ///
@@ -166,11 +258,13 @@ pub fn take_care_of_the_rest(input: TokenStream) -> TokenStream {
 /// OPENAI_API_KEY=sk-YOUR-API-KEY RUSTFLAGS='--cfg procmacro2_semver_exempt' cargo +nightly run
 /// ```
 ///
-/// - `OPENAI_API_KEY`: 取得してきたOPENAIのPIキーを設定してください。
-/// - `RUSTFLAGS=...`: [Span](https://doc.rust-lang.org/proc_macro/struct.Span.html) の [`source_file` method](https://doc.rust-lang.org/proc_macro/struct.Span.html#method.source_file) メソッドを使用するために指定しています。
+/// - `OPENAI_API_KEY`: 取得してきたOpenAIのAPIキーを設定してください。
+/// - `RUSTFLAGS=...`: [Span](https://doc.rust-lang.org/proc_macro/struct.Span.html) の [`source_file`](https://doc.rust-lang.org/proc_macro/struct.Span.html#method.source_file) メソッドを使用するために指定しています。
 /// - `cargo +nightly run`: `nightly` の指定理由は上記と同じです。
 ///
 /// 設定ファイルを通しての設定も可能です。
+///
+/// `.cargo/config.toml`
 ///
 /// ```toml:.cargo/config.toml
 /// [build]
@@ -180,10 +274,14 @@ pub fn take_care_of_the_rest(input: TokenStream) -> TokenStream {
 /// OPENAI_API_KEY = "sk-YOUR-API-KEY"
 /// ```
 ///
+/// `rust-toolchain.toml`
+///
 /// ```toml:rust-toolchain.toml
 /// [toolchain]
 /// channel = "nightly"
 /// ```
+///
+/// この場合オプションは不要になります。
 ///
 /// ```bash
 /// cargo run

@@ -44,7 +44,7 @@ hey_chat_gpt::take_care_of_the_rest!(
 );
 ```
 
-## How to use
+## Preparation
 
 To compile, run the below command.
 
@@ -58,6 +58,8 @@ OPENAI_API_KEY=sk-YOUR-API-KEY RUSTFLAGS='--cfg procmacro2_semver_exempt' cargo 
 
 These settings can also be enable by setting files.
 
+`.cargo/config.toml`
+
 ```toml:.cargo/config.toml
 [build]
 rustflags = ["--cfg=procmacro2_semver_exempt"]
@@ -66,10 +68,14 @@ rustflags = ["--cfg=procmacro2_semver_exempt"]
 OPENAI_API_KEY = "sk-YOUR-API-KEY"
 ```
 
+`rust-toolchain.toml`
+
 ```toml:rust-toolchain.toml
 [toolchain]
 channel = "nightly"
 ```
+
+In this case, the options are not necessary.
 
 ```bash
 cargo run
@@ -118,7 +124,7 @@ hey_chat_gpt::あとは任せた!(
 );
 ```
 
-## 使い方
+## 使用のための準備
 
 コンパイルするには以下を実行します。
 
@@ -126,11 +132,13 @@ hey_chat_gpt::あとは任せた!(
 OPENAI_API_KEY=sk-YOUR-API-KEY RUSTFLAGS='--cfg procmacro2_semver_exempt' cargo +nightly run
 ```
 
-- `OPENAI_API_KEY`: 取得してきたOPENAIのPIキーを設定してください。
-- `RUSTFLAGS=...`: [Span](https://doc.rust-lang.org/proc_macro/struct.Span.html) の [`source_file` method](https://doc.rust-lang.org/proc_macro/struct.Span.html#method.source_file) メソッドを使用するために指定しています。
+- `OPENAI_API_KEY`: 取得してきたOpenAIのAPIキーを設定してください。
+- `RUSTFLAGS=...`: [Span](https://doc.rust-lang.org/proc_macro/struct.Span.html) の [`source_file`](https://doc.rust-lang.org/proc_macro/struct.Span.html#method.source_file) メソッドを使用するために指定しています。
 - `cargo +nightly run`: `nightly` の指定理由は上記と同じです。
 
 設定ファイルを通しての設定も可能です。
+
+`.cargo/config.toml`
 
 ```toml:.cargo/config.toml
 [build]
@@ -140,10 +148,14 @@ rustflags = ["--cfg=procmacro2_semver_exempt"]
 OPENAI_API_KEY = "sk-YOUR-API-KEY"
 ```
 
+`rust-toolchain.toml`
+
 ```toml:rust-toolchain.toml
 [toolchain]
 channel = "nightly"
 ```
+
+この場合オプションは不要になります。
 
 ```bash
 cargo run

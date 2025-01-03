@@ -2,6 +2,13 @@
 name = "hey_chat_gpt"
 version = "1.0.0"
 edition = "2021"
+rust-version = "1.85.0"
+authors = ["namnium <anotherhollow1125@gmail.com>"]
+description = "A proc-macro to delegate implementation to the ChatGPT API. ChatGPT APIに実装を代行してもらうマクロです。"
+repository = "https://github.com/anotherhollow1125/hey_chat_gpt"
+license = "MIT"
+keywords = ["LLM", "GPT", "ChatGPT", "OpenAI", "proc-macro"]
+categories = ["development-tools"]
 
 [lib]
 proc-macro = true
