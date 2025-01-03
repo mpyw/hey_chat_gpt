@@ -2,6 +2,25 @@
 //!
 //! ChatGPT APIに実装を代行してもらうマクロです。
 //!
+//! - [`take_care_of_the_rest`](crate::take_care_of_the_rest!)
+//! - [`あとは任せた`](crate::あとは任せた!)
+//!
+//! ```rust
+//! use hey_chat_gpt::take_care_of_the_rest;
+//!
+//! fn main() {
+//!     println!("{}", fib(10));
+//! }
+//!
+//! take_care_of_the_rest!();
+//! # fn fib(n: usize) -> usize {
+//! #     match n {
+//! #         m @ 0..=1 => m,
+//! #         m => fib(m - 2) + fib(m - 1)
+//! #     }
+//! # }
+//! ```
+//!
 //! The difference between the two macros is whether they are in English or Japanese.
 //!
 //! この2つのマクロの違いは、英語か日本語かです。
