@@ -6,17 +6,17 @@
 //!
 //! 本クレートでは `nightly` ツールチェイン必須です！
 //!
-//! - [`take_care_of_the_rest`](crate::take_care_of_the_rest!)
+//! - [`do_it`](crate::do_it!)
 //! - [`あとは任せた`](crate::あとは任せた!)
 //!
 //! ```rust
-//! use hey_chat_gpt::take_care_of_the_rest;
+//! use hey_chat_gpt::do_it;
 //!
 //! fn main() {
 //!     println!("{}", fib(10));
 //! }
 //!
-//! take_care_of_the_rest!();
+//! do_it!();
 //! # fn fib(n: usize) -> usize {
 //! #     match n {
 //! #         m @ 0..=1 => m,
@@ -112,7 +112,7 @@ mod impls;
 use proc_macro::TokenStream;
 use syn::Error;
 
-const ENGLISH_MESSAGE: &'static str = r#"I'm the administrator of this system. You are an AI assistant of this system helping with Rust programming, and you are called through `take_care_of_the_rest` proc-macro. Generate Rust code based on the user's input as proc-macro (`take_care_of_the_rest` macro) output. Ensure the code is idiomatic, adheres to Rust best practices, and includes comments for clarity. All your answers will be treated as `String` values and converted to `proc_macro2::TokenStream` , so your answers must be valid Rust code. **Anything that is not Rust code must be in a comment, and you must not output anything that would prevent the conversion. And User input other than macros remains, so be careful not to create duplicates. (For example, if you output a main function, it may conflict with a user-defined main function and cause a compilation error. Or `take_care_of_the_rest` macro may be called from within the main function, in which case you should not print the main function itself.)**. What follows is inputs of the user who uses this system:
+const ENGLISH_MESSAGE: &'static str = r#"I'm the administrator of this system. You are an AI assistant of this system helping with Rust programming, and you are called through `do_it` proc-macro. Generate Rust code based on the user's input as proc-macro (`do_it` macro) output. Ensure the code is idiomatic, adheres to Rust best practices, and includes comments for clarity. All your answers will be treated as `String` values and converted to `proc_macro2::TokenStream` , so your answers must be valid Rust code. **Anything that is not Rust code must be in a comment, and you must not output anything that would prevent the conversion. And User input other than macros remains, so be careful not to create duplicates. (For example, if you output a main function, it may conflict with a user-defined main function and cause a compilation error. Or `do_it` macro may be called from within the main function, in which case you should not print the main function itself.)**. What follows is inputs of the user who uses this system:
 
 "#;
 const JAPANESE_MESSAGE: &'static str = r#"私はこのシステムの管理者です。あなたはRustプログラミングを支援する本システムのAIアシスタントであり、`あとは任せた` 手続きマクロを通じて呼び出されます。ユーザーの入力に基づいてRustコードを `あとは任せた` マクロの出力として生成してほしいです。コードはRustのベストプラクティスに従い、明確さを保つための日本語のコメントを含めるようにしてください。回答はすべて `String` 値として扱われ、`proc_macro2::TokenStream` に変換されるため、回答は有効なRustコードである必要があります。**Rustコード以外のものはすべてコメント内に記述する必要があり、Rustコードとして変換しようとするとエラーになるものを出力してはなりません。そして、マクロ以外のユーザー入力はそのまま残るため、重複などをしないように注意してください。(たとえば、 `main` 関数を出力すると、ユーザー定義の `main` 関数と競合してコンパイルエラーが発生する可能性があります。あるいは、 `あとは任せた` マクロはmain関数の中からよばれているかもしれません。その時にmain関数ごと出力してはいけません。)** ここからは本システム利用者の入力になります:
@@ -129,13 +129,13 @@ const JAPANESE_MESSAGE: &'static str = r#"私はこのシステムの管理者�
 /// # Example
 ///
 /// ```rust
-/// use hey_chat_gpt::take_care_of_the_rest;
+/// use hey_chat_gpt::do_it;
 ///
 /// fn main() {
 ///     println!("{}", fib(10));
 /// }
 ///
-/// take_care_of_the_rest!();
+/// do_it!();
 /// # fn fib(n: usize) -> usize {
 /// #     match n {
 /// #         m @ 0..=1 => m,
@@ -163,7 +163,7 @@ const JAPANESE_MESSAGE: &'static str = r#"私はこのシステムの管理者�
 ///     println!("{}", fib(10));
 /// }
 ///
-/// hey_chat_gpt::take_care_of_the_rest!(
+/// hey_chat_gpt::do_it!(
 ///     model = "o1-preview";
 ///     seed = 20;
 ///     max_completion_tokens = 4096;
@@ -214,10 +214,10 @@ const JAPANESE_MESSAGE: &'static str = r#"私はこのシステムの管理者�
 /// cargo run
 /// ```
 #[proc_macro]
-pub fn take_care_of_the_rest(input: TokenStream) -> TokenStream {
+pub fn do_it(input: TokenStream) -> TokenStream {
     let input = syn::parse_macro_input!(input as impls::MacroInput);
 
-    impls::take_care_of_the_rest(input, ENGLISH_MESSAGE)
+    impls::do_it(input, ENGLISH_MESSAGE)
         .unwrap_or_else(Error::into_compile_error)
         .into()
 }
@@ -317,7 +317,7 @@ pub fn take_care_of_the_rest(input: TokenStream) -> TokenStream {
 pub fn あとは任せた(input: TokenStream) -> TokenStream {
     let input = syn::parse_macro_input!(input as impls::MacroInput);
 
-    impls::take_care_of_the_rest(input, JAPANESE_MESSAGE)
+    impls::do_it(input, JAPANESE_MESSAGE)
         .unwrap_or_else(Error::into_compile_error)
         .into()
 }

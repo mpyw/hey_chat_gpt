@@ -17,7 +17,7 @@ use util::extract_rust_codes;
 
 const DEFAULT_MODEL: &str = "gpt-4o";
 
-pub fn take_care_of_the_rest(
+pub fn do_it(
     MacroInput {
         vis,
         model,

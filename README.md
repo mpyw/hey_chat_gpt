@@ -8,13 +8,13 @@ and replaces it with the result returned by the API.
 ## Example
 
 ```rust
-use hey_chat_gpt::take_care_of_the_rest;
+use hey_chat_gpt::do_it;
 
 fn main() {
     println!("{}", fib(10));
 }
 
-take_care_of_the_rest!();
+do_it!();
 ```
 
 ## Options
@@ -36,7 +36,7 @@ fn main() {
     println!("{}", fib(10));
 }
 
-hey_chat_gpt::take_care_of_the_rest!(
+hey_chat_gpt::do_it!(
     model = "o1-preview";
     seed = 20;
     max_completion_tokens = 4096;
