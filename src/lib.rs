@@ -2,6 +2,10 @@
 //!
 //! ChatGPT APIに実装を代行してもらうマクロです。
 //!
+//! **This crate requires `nightly` toolchain!**
+//!
+//! 本クレートでは `nightly` ツールチェイン必須です！
+//!
 //! - [`take_care_of_the_rest`](crate::take_care_of_the_rest!)
 //! - [`あとは任せた`](crate::あとは任せた!)
 //!
@@ -117,6 +121,8 @@ const JAPANESE_MESSAGE: &'static str = r#"私はこのシステムの管理者�
 
 /// A macro to delegate implementation to the ChatGPT API.
 ///
+/// **This crate requires `nightly` toolchain!**
+///
 /// This macro sends the entire file containing it to the [OpenAI API](https://platform.openai.com/),
 /// and replaces it with the result returned by the API.
 ///
@@ -217,6 +223,8 @@ pub fn take_care_of_the_rest(input: TokenStream) -> TokenStream {
 }
 
 /// ChatGPT APIに実装を代行してもらうマクロです。
+///
+/// **本クレートでは `nightly` ツールチェイン必須です！**
 ///
 /// このマクロを記述したファイル全体を[OpenAI API](https://platform.openai.com/)に投げ、返ってきた結果で置換します。
 ///

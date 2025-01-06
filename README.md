@@ -46,6 +46,15 @@ hey_chat_gpt::take_care_of_the_rest!(
 
 ## Preparation
 
+> [!IMPORTANT]
+> This crate requires `nightly` toolchain!
+>
+> `cargo add` command also needs to be `nightly`.
+>
+> ```bash
+> cargo +nightly add hey_chat_gpt
+> ```
+
 To compile, run the below command.
 
 ```bash
@@ -125,6 +134,15 @@ hey_chat_gpt::あとは任せた!(
 ```
 
 ## 使用のための準備
+
+> [!IMPORTANT]
+> 本クレートでは `nightly` ツールチェイン必須です！
+> 
+> `cargo add` コマンドもまた `nightly` を必要とします。
+>
+> ```bash
+> cargo +nightly add hey_chat_gpt
+> ```
 
 コンパイルするには以下を実行します。
 
